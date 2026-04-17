@@ -6,44 +6,44 @@ import sqlalchemy
 from sqlalchemy import text
 
 app = Flask(__name__)
-# Ma clé secrète pour sécuriser les sessions et les messages flash [cite: 17]
+# Ma clé secrète pour sécuriser les sessions et les messages flash 
 app.secret_key = 'ma_cle_secrete_astro_expert'
 
-# Configuration de la connexion à ma base de données MariaDB (TP Étape 4) [cite: 32, 35]
+# Configuration de la connexion à ma base de données MariaDB (TP Étape 4) 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/astronomie_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Initialisation des extensions pour la BDD et le temps réel (Bonus WebSockets) [cite: 32, 45]
+# Initialisation des extensions pour la BDD et le temps réel  
 db = SQLAlchemy(app)
 socketio = SocketIO(app)
 
 # --- MES MODÈLES DE DONNÉES ---
 
-# Table pour stocker les informations des utilisateurs [cite: 33]
+# Table pour stocker les informations des utilisateurs 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False) # Mots de passe hashés [cite: 19]
 
-# Table unique pour les appareils photos et les téléscopes [cite: 34]
+# Table unique pour les appareils photos et les téléscopes 
 class Equipement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    type_equip = db.Column(db.String(50), nullable=False) # 'photo' ou 'telescope'
+    type_equip = db.Column(db.String(50), nullable=False) 
     categorie = db.Column(db.String(100), nullable=False)
     marque = db.Column(db.String(100), nullable=False)
     modele = db.Column(db.String(100), nullable=False)
     date_sortie = db.Column(db.String(50))
     score = db.Column(db.Integer)
-    resume = db.Column(db.Text) # Colonne Bonus : Page de détails 
+    resume = db.Column(db.Text) # Page de détails 
     image_path = db.Column(db.String(255)) # Chemin vers mes images locales importées
 
-# Table pour la galerie de photographies [cite: 28]
+# Table pour la galerie de photographies 
 class Photographie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     titre = db.Column(db.String(100), nullable=False)
     url_image = db.Column(db.String(255), nullable=False)
 
-# Table pour le bonus Actualités (WebSockets) [cite: 44]
+# Table pour le bonus Actualités (WebSockets) 
 class Actualite(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     message = db.Column(db.String(255), nullable=False)
@@ -57,7 +57,7 @@ class Topic(db.Model):
 # --- INITIALISATION ET INJECTION DE DONNÉES ---
 
 with app.app_context():
-    # Création de la BDD et des tables si nécessaire [cite: 35, 38]
+    # Création de la BDD et des tables si nécessaire 
     engine_init = sqlalchemy.create_engine('mysql+pymysql://root:root@localhost/')
     with engine_init.connect() as conn:
         conn.execute(text("CREATE DATABASE IF NOT EXISTS astronomie_db"))
@@ -66,7 +66,7 @@ with app.app_context():
     # J'ajoute mes données réelles et mes images locales au premier lancement
     if Equipement.query.count() == 0:
         db.session.add_all([
-            # Mes Appareils Photo (catégories Amateur, Amateur sérieux, Professionnel) [cite: 26]
+            # Mes Appareils Photo (catégories Amateur, Amateur sérieux, Professionnel) 
             Equipement(type_equip='photo', categorie='Amateur', marque='Canon', modele='EOS R50', date_sortie='2023', score=4, image_path='camera debutant.jpg', resume='Un appareil léger parfait pour s\'initier.'),
             Equipement(type_equip='photo', categorie='Amateur sérieux', marque='Nikon', modele='D3400', date_sortie='2020', score=5, image_path='nikon-d3400-camera-for-amateur-photographer.jpg', resume='Idéal pour capturer la Voie Lactée avec précision.'),
             Equipement(type_equip='photo', categorie='Professionnel', marque='Sony', modele='A7R V', date_sortie='2022', score=5, image_path='pro.jpg', resume='La référence pour les photographies de ciel profond.'),
@@ -83,7 +83,7 @@ with app.app_context():
         ])
     db.session.commit()
 
-# --- ROUTES D'AUTHENTIFICATION (10 points) --- [cite: 16]
+# --- ROUTES D'AUTHENTIFICATION (10 points) --
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -113,7 +113,7 @@ def logout():
     session.clear()
     return redirect(url_for('login'))
 
-# --- ROUTES DE CONTENU (10 points) --- [cite: 23, 24]
+# --- ROUTES DE CONTENU (10 points) --- 
 
 @app.route('/')
 def home():
@@ -145,7 +145,7 @@ def detail_equipement(id):
     mon_item = Equipement.query.get_or_404(id)
     return render_template('detail.html', item=mon_item)
 
-# --- ROUTES BONUS (Actualités & Forum) --- [cite: 44, 46]
+# --- ROUTES BONUS (Actualités & Forum) --
 
 @app.route('/actualites')
 def actualites():
