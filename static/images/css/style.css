@@ -1,0 +1,51 @@
+:root {
+    --space-black: #05070a;
+    --neon-blue: #00f2ff;
+    --deep-purple: #1a1b3a;
+}
+
+body {
+    background-color: var(--space-black);
+    background-image: radial-gradient(circle at 50% 50%, #1a1b3a 0%, #05070a 100%);
+    color: #e0e0e0;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+.navbar {
+    background: rgba(5, 7, 10, 0.9) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--neon-blue);
+}
+
+.navbar-brand {
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 3px;
+    color: var(--neon-blue) !important;
+}
+
+/* Cartes Style "Vaisseau Spatial" */
+.card, .list-group-item {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(0, 242, 255, 0.1) !important;
+    backdrop-filter: blur(5px);
+    border-radius: 15px !important;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    border-color: var(--neon-blue) !important;
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+    transform: translateY(-5px);
+}
+
+h2, h4 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--neon-blue);
+    text-transform: uppercase;
+}
+
+/* Style spécifique pour les Actualités */
+#liste-actus .list-group-item {
+    border-left: 4px solid var(--neon-blue) !important;
+    margin-bottom: 10px;
+}

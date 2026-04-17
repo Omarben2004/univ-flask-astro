@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h2 class="text-center mb-4">Instruments d'Observation</h2>
+    
+    <div class="mb-5 shadow-sm rounded overflow-hidden" style="height: 300px;">
+        <img src="https://images.unsplash.com/photo-1581093582379-3837941b3127?q=80&w=1200" class="w-100 h-100" style="object-fit: cover;" alt="Bannière Télescope">
+    </div>
+
+    {% set sections = [
+        (' Télescopes  pour enfants', 'Des modèles simples pour les jeunes astronomes.'),
+        ('Automatisés', 'Téléscopes avec recherche automatique des étoiles.'),
+        ('Téléscopes complets', 'Instruments puissants pour le ciel profond.')
+    ] %}
+
+    {% for cat_name, desc in sections %}
+        <div class="mb-5">
+            <h4 class="text-success border-bottom pb-2">{{ cat_name }}</h4>
+            <p class="text-muted small">{{ desc }}</p>
+            
+            <div class="row">
+            {% for item in equipements if item.categorie == cat_name %}
+                <div class="col-md-6 mb-3">
+                    <div class="card bg-dark text-white border-secondary h-100 shadow">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-4 p-2">
+                                <img src="{{ url_for('static', filename='images/' + item.image_path) }}" 
+                                     class="img-fluid rounded" 
+                                     style="height: 120px; width: 100%; object-fit: cover;" 
+                                     alt="Photo téléscope">
+                            </div>
+                            <div class="col-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ item.marque }} <span class="text-warning">{{ item.modele }}</span></h5>
+                                    <p class="card-text small mb-1">Sortie en : {{ item.date_sortie }}</p>
+                                    <div class="mb-2">
+                                        {% for i in range(item.score) %}<span class="text-success">★</span>{% endfor %}
+                                    </div>
+                                    <a href="{{ url_for('detail_equipement', id=item.id) }}" class="btn btn-sm btn-outline-success">Détails techniques</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-12"><p class="text-muted">Aucun téléscope pour le moment.</p></div>
+            {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

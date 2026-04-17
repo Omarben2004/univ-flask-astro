@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h2 class="text-center mb-5">Galerie de l'Espace</h2>
+
+    <div class="row">
+        {% for photo in photos %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card bg-dark border-secondary shadow-sm h-100">
+                <img src="{{ url_for('static', filename='images/' + photo.url_image) }}" 
+                     class="card-img-top" 
+                     alt="{{ photo.titre }}"
+                     style="height: 250px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title text-center text-info">{{ photo.titre }}</h5>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12 text-center">
+            <p class="text-muted">Aucune photographie n'a été ajoutée pour le moment.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="text-center mb-5">
+    <h2>Flux Radio Spatial</h2>
+    <p class="text-info">Mises à jour en direct de la station</p>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card p-4 mb-4">
+            <form action="/ajouter_actu" method="POST">
+                <div class="input-group">
+                    <input type="text" name="message" class="form-control bg-dark text-white border-info" placeholder="Émettre un message..." required>
+                    <button class="btn btn-info" type="submit">Émettre</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="liste-actus" class="list-group">
+            {% for a in actus|reverse %}
+            <div class="list-group-item animate__animated animate__fadeIn">
+                <small class="text-info">TRANSMISSION REÇUE :</small>
+                <p class="mb-0">{{ a.message }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<script>
+    const socket = io();
+    socket.on('nouvelle_actu_event', function(data) {
+        const liste = document.getElementById("liste-actus");
+        const nouveauMsg = `
+            <div class="list-group-item border-warning" style="background: rgba(255,193,7,0.1) !important">
+                <small class="text-warning">ALERTE EN DIRECT :</small>
+                <p class="mb-0">${data.msg}</p>
+            </div>`;
+        liste.insertAdjacentHTML('afterbegin', nouveauMsg);
+    });
+</script>
+{% endblock %}

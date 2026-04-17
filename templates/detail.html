@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card shadow mt-4">
+    <div class="card-header bg-dark text-white d-flex justify-content-between">
+        <h3 class="mb-0">{{ item.marque }} {{ item.modele }}</h3>
+        <span class="badge bg-warning text-dark align-self-center">Score: {{ item.score }}/5</span>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Type :</strong> {{ item.type_equip|capitalize }}</p>
+                <p><strong>Catégorie :</strong> {{ item.categorie }}</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <p><strong>Date de sortie :</strong> {{ item.date_sortie }}</p>
+            </div>
+        </div>
+        <hr>
+        <h5>Résumé & Spécifications</h5>
+        <p class="card-text">
+            {% if item.resume %}
+                {{ item.resume }}
+            {% else %}
+                <span class="text-muted italic">Aucun détail supplémentaire disponible.</span>
+            {% endif %}
+        </p>
+        <div class="mt-4">
+            <a href="javascript:history.back()" class="btn btn-secondary">Retour</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
